@@ -25,9 +25,8 @@ class TwoChainz::Generator
   # heard.
   #
   # options - Hash of options. At least one is required.
-  #
   #           :max_words - (Integer) the maximum number of words to be
-  #                        generated
+  #                        generated.
   #
   # Returns a string.
   def spit(options = {})
