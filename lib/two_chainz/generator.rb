@@ -1,6 +1,4 @@
 class TwoChainz::Generator
-  attr_accessor :words_table
-
   def initialize
     @words_table = {}
   end
@@ -14,8 +12,8 @@ class TwoChainz::Generator
     heard = 0
 
     words.scan(/[\w\']+/) do |word|
-      heard += 1 unless words_table[word]
-      words_table[word] = true
+      heard += 1 unless @words_table[word]
+      @words_table[word] = true
     end
 
     heard
@@ -36,6 +34,6 @@ class TwoChainz::Generator
 
     max_words = Integer(options[:max_words])
 
-    words_table.keys.first.to_s
+    @words_table.keys.first.to_s
   end
 end
