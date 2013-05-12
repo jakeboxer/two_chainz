@@ -1,13 +1,20 @@
 class TwoChainz::Generator
   # Public: Create a new TwoChainz::Generator instance.
   #
-  # seed - (Optional integer) Seed to use when spitting. If nothing is provided,
-  #        Ruby core's Random::new_seed will be used.
+  # options - Hash of options.
+  #           :seed -   (Optional integer) Seed to use when spitting. If nothing
+  #                     is provided, Ruby core's Random::new_seed will be used.
+  #           :boring - (Optional boolean) Don't do any randomness. Always pick
+  #                     the most common thing. Mainly for testing. Defaults to
+  #                     false.
   #
   # Returns a TwoChainz::Generator
-  def initialize(seed = nil)
+  def initialize(options={})
     @words_table = {:beginning => Hash.new(0)}
-    @random      = seed ? Random.new(seed) : Random.new
+
+    unless options[:boring]
+      @random = seed ? Random.new(seed) : Random.new
+    end
   end
 
   # Public: Hear some words and remember them for future spitting.

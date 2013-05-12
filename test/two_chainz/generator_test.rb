@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe TwoChainz::Generator do
   before do
-    @generator = TwoChainz::Generator.new(1)
+    @generator = TwoChainz::Generator.new(:boring => true)
   end
 
   describe 'new' do
