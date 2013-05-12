@@ -28,4 +28,12 @@ describe TwoChainz::Generator do
       assert_equal 2, @generator.hear('love you')
     end
   end
+
+  describe 'spit' do
+    describe 'with no options provided' do
+      it 'must raise an ArgumentError' do
+        assert_raises(ArgumentError) { @generator.spit }
+      end
+    end
+  end
 end

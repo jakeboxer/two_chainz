@@ -20,4 +20,17 @@ class TwoChainz::Generator
 
     heard
   end
+
+  # Public: Produce a randomized sentence based on the words that have been
+  # heard.
+  #
+  # options - Hash of options. At least one is required.
+  #
+  #           :max_words - (Integer) the maximum number of words to be
+  #                        generated
+  #
+  # Returns a string.
+  def spit(options = {})
+    raise ArgumentError, 'The :max_words option must be provided'
+  end
 end
