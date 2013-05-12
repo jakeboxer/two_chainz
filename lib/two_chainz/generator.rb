@@ -69,8 +69,16 @@ class TwoChainz::Generator
     words_count = @words_table.keys.length - 1
 
     [max_words, words_count].min.times do |i|
-      word = @words_table[(sentence.last || :beginning)].keys.first
-      sentence << word
+      choices = @words_table[(sentence.last || :beginning)]
+
+      # TODO ALLOW THIS TO BE RANDOM IN NON BORING SITUATIONS
+      word = choices.max_by {|word, count| count}.first
+
+      if word == :ending
+        break
+      else
+        sentence << word
+      end
     end
 
     sentence.join(' ')

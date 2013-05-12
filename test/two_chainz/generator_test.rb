@@ -50,6 +50,14 @@ describe TwoChainz::Generator do
         @generator.hear('love you')
         assert_equal 'love you', @generator.spit(:max_words => 10)
       end
+
+      it "must return a two-word string when it's heard multiple two-word strings" do
+        @generator.hear('love you')
+        @generator.hear('love me')
+        @generator.hear('love me')
+        @generator.hear('you suck')
+        assert_equal 'love me', @generator.spit(:max_words => 10)
+      end
     end
   end
 end
