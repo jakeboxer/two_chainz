@@ -1,0 +1,2 @@
+class TwoChainz::Generator
+end
