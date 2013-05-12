@@ -41,6 +41,9 @@ class TwoChainz::Generator
       previous_word = current_word
     end
 
+    # Record what the last word was.
+    @words_table[previous_word][:ending] += 1 if previous_word
+
     heard_words
   end
 
