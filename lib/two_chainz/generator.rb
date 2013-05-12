@@ -1,6 +1,13 @@
 class TwoChainz::Generator
-  def initialize
+  # Public: Create a new TwoChainz::Generator instance.
+  #
+  # seed - (Optional integer) Seed to use when spitting. If nothing is provided,
+  #        Ruby core's Random::new_seed will be used.
+  #
+  # Returns a TwoChainz::Generator
+  def initialize(seed = nil)
     @words_table = {}
+    @random      = seed ? Random.new(seed) : Random.new
   end
 
   # Public: Hear some words and remember them for future spitting.
