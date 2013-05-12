@@ -6,7 +6,7 @@ class TwoChainz::Generator
   #
   # Returns a TwoChainz::Generator
   def initialize(seed = nil)
-    @words_table = {}
+    @words_table = {:beginning => Hash.new(0)}
     @random      = seed ? Random.new(seed) : Random.new
   end
 
@@ -16,14 +16,25 @@ class TwoChainz::Generator
   #
   # Returns the number of unique new words the generator heard (integer)
   def hear(words)
-    heard = 0
+    heard_words   = 0
+    previous_word = nil
 
-    words.scan(/[\w\']+/) do |word|
-      heard += 1 unless @words_table[word]
-      @words_table[word] = true
+    words.scan(/[\w\']+/) do |current_word|
+      # If we haven't heard this word before, increment the newly-heard words
+      # count.
+      heard_words += 1 unless @words_table.has_key?(current_word)
+
+      # Increment the number of times the current word has been the successor of
+      # the previous word. If we have no previous word, we're on the first word.
+      @words_table[previous_word || :beginning][current_word] += 1
+
+      # Create a words table entry for the current word
+      @words_table[current_word] ||= Hash.new(0)
+
+      previous_word = current_word
     end
 
-    heard
+    heard_words
   end
 
   # Public: Produce a randomized sentence based on the words that have been
@@ -41,6 +52,17 @@ class TwoChainz::Generator
 
     max_words = Integer(options[:max_words])
 
-    @words_table.keys.first.to_s
+    sentence = []
+
+    # TODO MAKE THIS A METHOD
+    # -1 cuz :beginning
+    words_count = @words_table.keys.length - 1
+
+    [max_words, words_count].min.times do |i|
+      word = @words_table[(sentence.last || :beginning)].keys.first
+      sentence << word
+    end
+
+    sentence.join(' ')
   end
 end
