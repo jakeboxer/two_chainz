@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class TwoChainz::VersionTest < MiniTest::Unit::TestCase
-  def test_existence
+describe 'TwoChainz::VERSION' do
+  it 'must exist' do
     refute_nil TwoChainz::VERSION, 'TwoChainz::VERSION should not be nil'
   end
 end

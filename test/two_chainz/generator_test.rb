@@ -1,7 +1,9 @@
 require 'test_helper'
 
-class TwoChainz::GeneratorTest < MiniTest::Unit::TestCase
-  def test_new
-    refute_nil TwoChainz::Generator.new, "TwoChainz::Generator#new should create a new TwoChainz::Generator"
+describe TwoChainz::Generator do
+  describe 'new' do
+    it 'must create a new instance of TwoChainz::Generator' do
+      refute_nil TwoChainz::Generator.new, "TwoChainz::Generator#new should create a new TwoChainz::Generator"
+    end
   end
 end

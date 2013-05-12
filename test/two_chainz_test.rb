@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class TwoChainzTest < MiniTest::Unit::TestCase
-  def test_existence
+describe TwoChainz do
+  it 'must exist' do
     assert defined?(TwoChainz)
   end
 end
