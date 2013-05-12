@@ -31,6 +31,12 @@ class TwoChainz::Generator
   #
   # Returns a string.
   def spit(options = {})
-    raise ArgumentError, 'The :max_words option must be provided'
+    unless options[:max_words]
+      raise ArgumentError, 'The :max_words option must be provided'
+    end
+
+    max_words = Integer(options[:max_words])
+
+    words_table.keys.first.to_s
   end
 end

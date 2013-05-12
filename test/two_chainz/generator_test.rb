@@ -35,5 +35,16 @@ describe TwoChainz::Generator do
         assert_raises(ArgumentError) { @generator.spit }
       end
     end
+
+    describe 'with the :max_words option provided' do
+      it "must return an empty string when it hasn't heard anything" do
+        assert_empty @generator.spit(:max_words => 10)
+      end
+
+      it "must return a one-word string when it has only heard one word" do
+        @generator.hear('sup')
+        assert_equal 'sup', @generator.spit(:max_words => 10)
+      end
+    end
   end
 end
