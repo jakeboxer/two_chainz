@@ -21,7 +21,7 @@ generator.hear("Imma worry bout me, give a fuck about you")
 generator.hear("Just as a reminder to myself")
 generator.hear("I wear every single chain even when I'm in the house")
 
-generator.spit(:max_words => 12) # => "We just as a fuck chain even when I'm in the credit"
+generator.spit(:words => 12) # => "We just as a fuck chain even when I'm in the credit"
 ```
 
 ## Less important shit
@@ -34,8 +34,8 @@ generator = TwoChainz::Generator.new
 generator.hear("I love you I love you")
 generator.hear("You are alright I guess")
 
-generator.spit(:max_words => 2) # => "I guess"
-generator.spit(:max_words => 2) # => "You I"
+generator.spit(:words => 2) # => "I guess"
+generator.spit(:words => 2) # => "You I"
 ```
 
 You can seed the generator if you want consistency.
@@ -52,6 +52,6 @@ generator = TwoChainz::Generator.new(:boring => true)
 generator.hear("I love you I love you I love you")
 generator.hear("You are alright I guess")
 
-generator.spit(:max_words => 2) # => "I love"
-generator.spit(:max_words => 2) # => "I love"
+generator.spit(:words => 2) # => "I love"
+generator.spit(:words => 2) # => "I love"
 ```
