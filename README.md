@@ -16,10 +16,10 @@ require 'two_chainz'
 
 generator = TwoChainz::Generator.new
 
-generator.hear("Drop it to the floor, make that ass shake")
-generator.hear("Whoa, make the ground move, that's an ass quake")
-generator.hear("Built a house up on that ass, that's an ass state")
-generator.hear("Roll my weed on it, that's an ass tray")
+generator.hear("We just want the credit where it's due")
+generator.hear("Imma worry bout me, give a fuck about you")
+generator.hear("Just as a reminder to myself")
+generator.hear("I wear every single chain even when I'm in the house")
 
-generator.spit(:words => 6) # => "Built a weed on that ass quake"
+generator.spit(:max_words => 12) # => "We just as a fuck chain even when I'm in the credit"
 ```
