@@ -21,5 +21,5 @@ generator.hear("Whoa, make the ground move, that's an ass quake")
 generator.hear("Built a house up on that ass, that's an ass state")
 generator.hear("Roll my weed on it, that's an ass tray")
 
-generator.spit(:max_words => 6) # => "Built a weed on that ass quake"
+generator.spit(:words => 6) # => "Built a weed on that ass quake"
 ```
