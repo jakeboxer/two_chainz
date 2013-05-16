@@ -13,6 +13,7 @@ class TwoChainz::Generator
     @words_table = {:beginning => Hash.new(0)}
 
     unless options[:boring]
+      seed    = options[:seed]
       @random = seed ? Random.new(seed) : Random.new
     end
   end

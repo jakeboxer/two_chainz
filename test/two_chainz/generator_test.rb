@@ -6,8 +6,19 @@ describe TwoChainz::Generator do
   end
 
   describe 'new' do
-    it 'must create a new instance of TwoChainz::Generator' do
-      refute_nil @generator, "TwoChainz::Generator#new should create a new TwoChainz::Generator"
+    it 'must create a new instance of TwoChainz::Generator with no arguments' do
+      g = TwoChainz::Generator.new
+      refute_nil g, "TwoChainz::Generator.new should create a new TwoChainz::Generator"
+    end
+
+    it 'must create a new instance of TwoChainz::Generator with a seed' do
+      g = TwoChainz::Generator.new(:seed => 3)
+      refute_nil g, "TwoChainz::Generator.new should create a new TwoChainz::Generator"
+    end
+
+    it 'must create a new instance of TwoChainz::Generator in boring mode' do
+      g = TwoChainz::Generator.new(:boring => true)
+      refute_nil g, "TwoChainz::Generator.new should create a new TwoChainz::Generator"
     end
   end
 
