@@ -83,9 +83,24 @@ describe TwoChainz::Generator do
         assert_empty @generator.spit(:max_chars => 0)
       end
 
+      it 'must return an empty string when all words are longer than max_chars' do
+        @generator.hear('incredibly')
+        assert_empty @generator.spit(:max_chars => 9)
+      end
+
       it "must return a one-letter string when it's only heard a one-letter word" do
         @generator.hear('a')
         assert_equal 'a', @generator.spit(:max_chars => 1)
+      end
+
+      it "must stay under the character limit" do
+        @generator.hear("i've felt the ground before")
+        assert_equal "i've felt", @generator.spit(:max_chars => 12)
+      end
+
+      it "must come as close to the character limit as it can" do
+        @generator.hear("i've felt the ground before")
+        assert_equal "i've felt the", @generator.spit(:max_chars => 13)
       end
     end
   end
