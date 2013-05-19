@@ -71,4 +71,19 @@ describe TwoChainz::Generator do
       end
     end
   end
+
+  describe 'heard_words' do
+    it 'must return every word it has heard' do
+      words = %w(when everything's wrong you make it right)
+      @generator.hear(words.join(' '))
+
+      assert_equal_without_order words, @generator.heard_words
+    end
+
+    it 'must return each word only once' do
+      @generator.hear('i need your love i need your time')
+
+      assert_equal_without_order %w(i need your love time), @generator.heard_words
+    end
+  end
 end
