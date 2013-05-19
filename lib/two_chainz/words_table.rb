@@ -1,0 +1,2 @@
+class TwoChainz::WordsTable
+end
