@@ -55,3 +55,15 @@ generator.hear("You are alright I guess")
 generator.spit(:words => 2) # => "I love"
 generator.spit(:words => 2) # => "I love"
 ```
+
+Instead of specifying how many words you want, you can specify a maximum number of characters. You'll get a sentence that is guaranteed to be that many characters or fewer (and it will usually come pretty close).
+
+``` ruby
+generator = TwoChainz::Generator.new
+
+generator.hear("Once they caught us off-guard")
+generator.hear("The Mac-10 was in the grass and")
+generator.hear("I ran like a cheetah with thoughts of an assassin")
+
+generator.spit(:max_chars => 20) # => "Once they cheetah"
+```
