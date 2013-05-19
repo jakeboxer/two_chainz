@@ -52,16 +52,15 @@ class TwoChainz::Generator
   # heard.
   #
   # options - Hash of options. At least one is required.
-  #           :max_words - (Integer) the maximum number of words to be
-  #                        generated.
+  #           :words - (Integer) the number of words to be generated.
   #
   # Returns a string.
   def spit(options = {})
-    unless options[:max_words]
-      raise ArgumentError, 'The :max_words option must be provided'
+    unless options[:words]
+      raise ArgumentError, 'The :words option must be provided'
     end
 
-    max_words = Integer(options[:max_words])
+    words = Integer(options[:words])
 
     sentence = []
 
@@ -69,7 +68,7 @@ class TwoChainz::Generator
     # -1 cuz :beginning
     words_count = @words_table.keys.length - 1
 
-    [max_words, words_count].min.times do |i|
+    [words, words_count].min.times do |i|
       choices = @words_table[(sentence.last || :beginning)]
 
       # TODO ALLOW THIS TO BE RANDOM IN NON BORING SITUATIONS

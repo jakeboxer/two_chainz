@@ -47,19 +47,19 @@ describe TwoChainz::Generator do
       end
     end
 
-    describe 'with the :max_words option provided' do
+    describe 'with the :words option provided' do
       it "must return an empty string when it hasn't heard anything" do
-        assert_empty @generator.spit(:max_words => 10)
+        assert_empty @generator.spit(:words => 10)
       end
 
       it "must return a one-word string when it has only heard one word" do
         @generator.hear('sup')
-        assert_equal 'sup', @generator.spit(:max_words => 10)
+        assert_equal 'sup', @generator.spit(:words => 10)
       end
 
       it "must return a two-word string when it's heard a two-word string" do
         @generator.hear('love you')
-        assert_equal 'love you', @generator.spit(:max_words => 10)
+        assert_equal 'love you', @generator.spit(:words => 10)
       end
 
       it "must return a two-word string when it's heard multiple two-word strings" do
@@ -67,7 +67,7 @@ describe TwoChainz::Generator do
         @generator.hear('love me')
         @generator.hear('love me')
         @generator.hear('you suck')
-        assert_equal 'love me', @generator.spit(:max_words => 10)
+        assert_equal 'love me', @generator.spit(:words => 10)
       end
     end
   end
