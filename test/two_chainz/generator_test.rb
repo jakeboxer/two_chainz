@@ -76,6 +76,18 @@ describe TwoChainz::Generator do
         assert_equal 'love me', @generator.spit(:words => 2)
       end
     end
+
+    describe 'with the :max_chars option provided' do
+      it 'must return an empty string when :max_chars is 0' do
+        @generator.hear('irrelevant')
+        assert_empty @generator.spit(:max_chars => 0)
+      end
+
+      it "must return a one-letter string when it's only heard a one-letter word" do
+        @generator.hear('a')
+        assert_equal 'a', @generator.spit(:max_chars => 1)
+      end
+    end
   end
 
   describe 'heard_words' do

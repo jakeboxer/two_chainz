@@ -53,22 +53,35 @@ class TwoChainz::Generator
   #
   # options - Hash of options. At least one is required.
   #           :words - (Integer) the number of words to be generated.
+  #           :max_chars - (Integer) the maximum number of characters to be
+  #                        generated.
   #
   # Returns a string.
   def spit(options = {})
     raise StandardError, "The generator hasn't heard anything yet" if heard_words.empty?
 
-    unless options[:words]
-      raise ArgumentError, 'The :words option must be provided'
-    end
-
-    words = Integer(options[:words])
+    words     = options[:words] && Integer(options[:words])
+    max_chars = options[:max_chars] && Integer(options[:max_chars])
 
     sentence = []
 
-    words.times do |i|
-      previous_word = sentence.last || :beginning
-      sentence << word_after(previous_word)
+    if words
+      words.times do |i|
+        previous_word = sentence.last || :beginning
+        sentence << word_after(previous_word)
+      end
+    elsif max_chars
+      sentence_length = -1 # Start at -1 cuz of the first space
+
+      while sentence_length < max_chars
+        previous_word    = sentence.last || :beginning
+        word             = word_after(previous_word)
+        sentence_length += word.length + 1 # Include space
+
+        sentence << word_after(previous_word) unless sentence_length > max_chars
+      end
+    else
+      raise ArgumentError, "Either :words or :max_chars must be specified"
     end
 
     sentence.join(' ')
