@@ -43,23 +43,29 @@ describe TwoChainz::Generator do
   describe 'spit' do
     describe 'with no options provided' do
       it 'must raise an ArgumentError' do
+        @generator.hear('irrelevant')
         assert_raises(ArgumentError) { @generator.spit }
+      end
+
+      it "must raise a StandardError when it hasn't heard anything" do
+        assert_raises(StandardError) { @generator.spit }
       end
     end
 
     describe 'with the :words option provided' do
-      it "must return an empty string when it hasn't heard anything" do
-        assert_empty @generator.spit(:words => 10)
+      it "must return an empty string when :words is 0" do
+        @generator.hear('irrelevant')
+        assert_empty @generator.spit(:words => 0)
       end
 
       it "must return a one-word string when it has only heard one word" do
         @generator.hear('sup')
-        assert_equal 'sup', @generator.spit(:words => 10)
+        assert_equal 'sup', @generator.spit(:words => 1)
       end
 
       it "must return a two-word string when it's heard a two-word string" do
         @generator.hear('love you')
-        assert_equal 'love you', @generator.spit(:words => 10)
+        assert_equal 'love you', @generator.spit(:words => 2)
       end
 
       it "must return a two-word string when it's heard multiple two-word strings" do
@@ -67,7 +73,7 @@ describe TwoChainz::Generator do
         @generator.hear('love me')
         @generator.hear('love me')
         @generator.hear('you suck')
-        assert_equal 'love me', @generator.spit(:words => 10)
+        assert_equal 'love me', @generator.spit(:words => 2)
       end
     end
   end

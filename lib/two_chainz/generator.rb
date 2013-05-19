@@ -56,6 +56,8 @@ class TwoChainz::Generator
   #
   # Returns a string.
   def spit(options = {})
+    raise StandardError, "The generator hasn't heard anything yet" if heard_words.empty?
+
     unless options[:words]
       raise ArgumentError, 'The :words option must be provided'
     end
@@ -64,21 +66,19 @@ class TwoChainz::Generator
 
     sentence = []
 
-    # TODO MAKE THIS A METHOD
-    # -1 cuz :beginning
-    words_count = @words_table.keys.length - 1
-
-    [words, words_count].min.times do |i|
+    words.times do |i|
       choices = @words_table[(sentence.last || :beginning)]
 
-      # TODO ALLOW THIS TO BE RANDOM IN NON BORING SITUATIONS
+      # Pick the most popular next word.
+      # TODO(jakeboxer): Make this random in non-boring situations.
       word = choices.max_by {|word, count| count}.first
 
-      if word == :ending
-        break
-      else
-        sentence << word
-      end
+      # If the most popular next word is the sentence ending, pick the
+      # alphabetical first word.
+      # TODO(jakeboxer): Make this random in non-boring situations.
+      word = heard_words.sort.first if word == :ending
+
+      sentence << word
     end
 
     sentence.join(' ')
