@@ -52,36 +52,42 @@ class TwoChainz::Generator
   # heard.
   #
   # options - Hash of options. At least one is required.
-  #           :max_words - (Integer) the maximum number of words to be
-  #                        generated.
+  #           :words - (Integer) the number of words to be generated.
   #
   # Returns a string.
   def spit(options = {})
-    unless options[:max_words]
-      raise ArgumentError, 'The :max_words option must be provided'
+    raise StandardError, "The generator hasn't heard anything yet" if heard_words.empty?
+
+    unless options[:words]
+      raise ArgumentError, 'The :words option must be provided'
     end
 
-    max_words = Integer(options[:max_words])
+    words = Integer(options[:words])
 
     sentence = []
 
-    # TODO MAKE THIS A METHOD
-    # -1 cuz :beginning
-    words_count = @words_table.keys.length - 1
-
-    [max_words, words_count].min.times do |i|
+    words.times do |i|
       choices = @words_table[(sentence.last || :beginning)]
 
-      # TODO ALLOW THIS TO BE RANDOM IN NON BORING SITUATIONS
+      # Pick the most popular next word.
+      # TODO(jakeboxer): Make this random in non-boring situations.
       word = choices.max_by {|word, count| count}.first
 
-      if word == :ending
-        break
-      else
-        sentence << word
-      end
+      # If the most popular next word is the sentence ending, pick the
+      # alphabetical first word.
+      # TODO(jakeboxer): Make this random in non-boring situations.
+      word = heard_words.sort.first if word == :ending
+
+      sentence << word
     end
 
     sentence.join(' ')
+  end
+
+  # Public: Get all the words that the generator has heard.
+  #
+  # Returns an array.
+  def heard_words
+    @words_table.keys - [:beginning]
   end
 end
