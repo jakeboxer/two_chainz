@@ -20,10 +20,8 @@ class TwoChainz::WordsTable
   #
   # Returns the new count of the entry.
   def increment(first_word=nil, second_word=nil)
-    # We need either a first word or a second word
-    unless first_word || second_word
-      raise ArgumentError, "At least one word must be provided to TwoChainz::WordsTable#increment"
-    end
+    # Don't do anything if we didn't get a first or second word
+    return 0 unless first_word || second_word
 
     # Only one of these will run, since we error if both are nil
     first_word  ||= :beginning

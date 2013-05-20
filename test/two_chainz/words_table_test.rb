@@ -6,8 +6,8 @@ describe TwoChainz::WordsTable do
   end
 
   describe 'increment' do
-    it 'must error if there are no arguments' do
-      assert_raises(ArgumentError) { @table.increment }
+    it 'must return 0 when there are no arguments' do
+      assert_equal 0, @table.increment
     end
 
     it 'must return the correct value when there is one argument' do
