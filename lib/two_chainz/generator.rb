@@ -87,13 +87,6 @@ class TwoChainz::Generator
     sentence.join(' ')
   end
 
-  # Public: Get all the words that the generator has heard.
-  #
-  # Returns an array.
-  def heard_words
-    @words_table.keys - [:beginning]
-  end
-
   private
 
   # Internal: Get a word that comes after the specified one.

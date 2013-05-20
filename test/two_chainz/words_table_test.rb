@@ -43,4 +43,31 @@ describe TwoChainz::WordsTable do
       refute @table.include?('chainz')
     end
   end
+
+  describe 'words' do
+    it 'must return every word that has been incremented' do
+      words = %w(when everything's wrong you make it right)
+      increment_words(@table, words)
+
+      assert_equal_without_order words, @table.words
+    end
+
+    it 'must return each word only once' do
+      increment_words(@table, %w(i need your love i need your time))
+      assert_equal_without_order %w(i need your love time), @table.words
+    end
+  end
+
+  ##################
+  # Helper methods #
+  ##################
+
+  def increment_words(table, words)
+    prev = nil
+
+    words.each do |word|
+      table.increment(prev, word)
+      prev = word
+    end
+  end
 end

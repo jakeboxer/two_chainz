@@ -19,12 +19,19 @@ class TwoChainz::WordsTable
   #               ending of a sentence.
   #
   # Returns the new count of the entry.
-  def increment(first_word=:beginning, second_word=:ending)
-    if first_word == :beginning && second_word == :ending
+  def increment(first_word=nil, second_word=nil)
+    # We need either a first word or a second word
+    unless first_word || second_word
       raise ArgumentError, "At least one word must be provided to TwoChainz::WordsTable#increment"
     end
 
-    @table[first_word]              ||= Hash.new(0)
+    # Only one of these will run, since we error if both are nil
+    first_word  ||= :beginning
+    second_word ||= :ending
+
+    add_row(first_word)
+    add_row(second_word) unless second_word == :ending
+
     @table[first_word][second_word]  += 1
   end
 
@@ -35,5 +42,18 @@ class TwoChainz::WordsTable
   # Returns a boolean
   def include?(word)
     @table.keys.include?(word)
+  end
+
+  # Public: Get all the words that have been incremented at least once.
+  #
+  # Returns an array.
+  def words
+    @table.keys - [:beginning]
+  end
+
+  private
+
+  def add_row(word)
+    @table[word] ||= Hash.new(0)
   end
 end
