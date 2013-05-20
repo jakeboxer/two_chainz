@@ -51,6 +51,29 @@ class TwoChainz::WordsTable
     @table.keys - [:beginning]
   end
 
+  # Public: Get all the words that have come after the specified word. In the
+  # result, the keys are the words and the values are the number of times that
+  # word has appeared after the specified word.
+  #
+  # Can also include the :ending key, which indicates that the sentence ended
+  # after that word.
+  #
+  # word - Word to find all following words for
+  #
+  # Examples
+  #
+  #   increment('your', 'love')
+  #   increment('your', 'time')
+  #   increment('your', 'love')
+  #   words_after('your')
+  #   # => {"love" => 2, "time" => 1}
+  #
+  # Returns a hash.
+  def words_after(word)
+    words_after = Hash[@table[word] || {}]
+    words_after
+  end
+
   private
 
   def add_row(word)

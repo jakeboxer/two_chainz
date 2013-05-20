@@ -58,6 +58,25 @@ describe TwoChainz::WordsTable do
     end
   end
 
+  describe 'words_after' do
+    it 'must return a hash of all the words that have come after the specified word' do
+      @table.increment('your', 'love')
+      @table.increment('your', 'love')
+      @table.increment('your', 'time')
+      @table.increment('hammer', 'time')
+      @table.increment('ass', 'quake')
+
+      assert_equal({'love' => 2, 'time' => 1}, @table.words_after('your'))
+    end
+
+    it 'must include :ending if it was used as the last word' do
+      @table.increment('broken', 'hearted')
+      @table.increment('broken')
+
+      assert_equal({'hearted' => 1, :ending => 1}, @table.words_after('broken'))
+    end
+  end
+
   ##################
   # Helper methods #
   ##################
