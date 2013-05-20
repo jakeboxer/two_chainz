@@ -10,7 +10,7 @@ class TwoChainz::Generator
   #
   # Returns a TwoChainz::Generator
   def initialize(options={})
-    @words_table = {:beginning => Hash.new(0)}
+    @words_table = TwoChainz::WordsTable.new
 
     unless options[:boring]
       seed    = options[:seed]
@@ -30,20 +30,17 @@ class TwoChainz::Generator
     words.scan(/[\w\']+/) do |current_word|
       # If we haven't heard this word before, increment the newly-heard words
       # count.
-      heard_words += 1 unless @words_table.has_key?(current_word)
+      heard_words += 1 unless @words_table.include?(current_word)
 
       # Increment the number of times the current word has been the successor of
-      # the previous word. If we have no previous word, we're on the first word.
-      @words_table[previous_word || :beginning][current_word] += 1
-
-      # Create a words table entry for the current word
-      @words_table[current_word] ||= Hash.new(0)
+      # the previous word.
+      @words_table.increment(previous_word, current_word)
 
       previous_word = current_word
     end
 
     # Record what the last word was.
-    @words_table[previous_word][:ending] += 1 if previous_word
+    @words_table.increment(previous_word) if previous_word
 
     heard_words
   end
@@ -58,7 +55,9 @@ class TwoChainz::Generator
   #
   # Returns a string.
   def spit(options = {})
-    raise StandardError, "The generator hasn't heard anything yet" if heard_words.empty?
+    if @words_table.words.empty?
+      raise StandardError, "The generator hasn't heard anything yet"
+    end
 
     words     = options[:words] && Integer(options[:words])
     max_chars = options[:max_chars] && Integer(options[:max_chars])
@@ -95,7 +94,7 @@ class TwoChainz::Generator
   #
   # Returns a string.
   def word_after(previous_word)
-    choices   = @words_table[previous_word]
+    choices = @words_table.words_after(previous_word)
 
     # Pick the most popular next word.
     # TODO(jakeboxer): Make this random in non-boring situations.
