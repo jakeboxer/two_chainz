@@ -70,8 +70,7 @@ class TwoChainz::WordsTable
   #
   # Returns a hash.
   def words_after(word)
-    words_after = Hash[@table[word] || {}]
-    words_after
+    Hash[@table[word] || {}]
   end
 
   private
