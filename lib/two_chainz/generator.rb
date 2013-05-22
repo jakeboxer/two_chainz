@@ -22,16 +22,11 @@ class TwoChainz::Generator
   #
   # words - String of words to hear.
   #
-  # Returns the number of unique new words the generator heard (integer)
+  # Returns nothing.
   def hear(words)
-    heard_words   = 0
     previous_word = nil
 
     words.scan(/[\w\']+/) do |current_word|
-      # If we haven't heard this word before, increment the newly-heard words
-      # count.
-      heard_words += 1 unless @words_table.include?(current_word)
-
       # Increment the number of times the current word has been the successor of
       # the previous word.
       @words_table.increment(previous_word, current_word)
@@ -42,7 +37,7 @@ class TwoChainz::Generator
     # Record what the last word was.
     @words_table.increment(previous_word) if previous_word
 
-    heard_words
+    true
   end
 
   # Public: Produce a randomized sentence based on the words that have been

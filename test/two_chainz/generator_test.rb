@@ -23,20 +23,20 @@ describe TwoChainz::Generator do
   end
 
   describe 'hear' do
-    it 'must return 0 when an empty string is passed' do
-      assert_equal 0, @generator.hear('')
+    it 'must work when an empty string is passed' do
+      assert @generator.hear('')
     end
 
-    it 'must return 1 when a one-word string is passed' do
-      assert_equal 1, @generator.hear('sup')
+    it 'must work when a one-word string is passed' do
+      assert @generator.hear('sup')
     end
 
-    it 'must return 1 when a string with two of the same words are passed' do
-      assert_equal 1, @generator.hear('yo yo')
+    it 'must work when a string with two of the same words are passed' do
+      assert @generator.hear('yo yo')
     end
 
-    it 'must return 2 when a string with two different words are passed' do
-      assert_equal 2, @generator.hear('love you')
+    it 'must work when a string with two different words are passed' do
+      assert @generator.hear('love you')
     end
   end
 
