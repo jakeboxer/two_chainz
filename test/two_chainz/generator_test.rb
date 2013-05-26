@@ -56,9 +56,16 @@ describe TwoChainz::Generator do
       assert_equal "yo i was at the other day and that shit's still up", @generator.spit(:words => 12)
     end
 
-    it 'must ignore @mention style tokens it has heard' do
-      @generator.hear("hey @jakeboxer don't be in this tweet")
-      assert_equal "hey don't be in this tweet", @generator.spit(:words => 6)
+    describe '@mention style tokens' do
+      it 'must ignore them in the beginning of sentences' do
+        @generator.hear("@jakeboxer don't be in this tweet")
+        assert_equal "don't be in this tweet", @generator.spit(:words => 5)
+      end
+
+      it 'must ignore them in the middle of sentences' do
+        @generator.hear("hey @jakeboxer don't be in this tweet")
+        assert_equal "hey don't be in this tweet", @generator.spit(:words => 6)
+      end
     end
 
     describe 'with no options provided' do
