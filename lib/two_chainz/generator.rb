@@ -26,7 +26,7 @@ class TwoChainz::Generator
   def hear(words)
     previous_word = nil
 
-    words.scan(/[\w\'@]+/) do |current_word|
+    words.scan(/[\w\'+@#]+/) do |current_word|
       # Increment the number of times the current word has been the successor of
       # the previous word.
       @words_table.increment(previous_word, current_word)
