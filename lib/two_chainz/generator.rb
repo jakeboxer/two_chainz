@@ -158,6 +158,20 @@ class TwoChainz::Generator
     sanitized_text
   end
 
+  # Internal: Pick a word randomly (weighted) from a hash of words. Each word
+  # has a chance of being picked equivalent to current_word_count / total_word_count.
+  #
+  # words - Hash of words to pick one from. Keys are words, values are counts.
+  #
+  # Example:
+  #
+  #   words = {'dog' => 5, 'cat' => 3, 'fish' => 2}
+  #   random_word(words)
+  #   # => 'cat'
+  #   random_word(words)
+  #   # => 'dog'
+  #
+  # Returns a string.
   def random_word(words)
     chosen_word             = nil
     total_occurrences_count = words.values.inject(:+)
