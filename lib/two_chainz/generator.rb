@@ -108,16 +108,26 @@ class TwoChainz::Generator
   #
   # Returns a string.
   def word_after(previous_word)
-    choices = @words_table.words_after(previous_word)
+    next_word = nil
+    choices   = @words_table.words_after(previous_word)
 
-    # Pick the most popular next word.
-    # TODO(jakeboxer): Make this random in non-boring situations.
-    next_word = choices.max_by {|word, count| count}.first
+    if @random
+      # Random mode
+      next_word = random_word(choices)
 
-    # If the most popular next word is the sentence ending, pick the
-    # alphabetical first word.
-    # TODO(jakeboxer): Make this random in non-boring situations.
-    next_word = @words_table.words.sort.first if next_word == :ending
+      if next_word == :ending
+        next_word = random_word(@words_table.words_after(:beginning))
+      end
+    else
+      # Boring mode
+
+      # Pick the most popular next word.
+      next_word = choices.max_by {|word, count| count}.first
+
+      # If the most popular next word is the sentence ending, pick the
+      # alphabetical first word.
+      next_word = @words_table.words.sort.first if next_word == :ending
+    end
 
     next_word
   end
@@ -146,5 +156,39 @@ class TwoChainz::Generator
     sanitized_text.gsub!(MENTION_REGEX, '')
 
     sanitized_text
+  end
+
+  # Internal: Pick a word randomly (weighted) from a hash of words. Each word
+  # has a chance of being picked equivalent to current_word_count / total_word_count.
+  #
+  # words - Hash of words to pick one from. Keys are words, values are counts.
+  #
+  # Example:
+  #
+  #   words = {'dog' => 5, 'cat' => 3, 'fish' => 2}
+  #   random_word(words)
+  #   # => 'cat'
+  #   random_word(words)
+  #   # => 'dog'
+  #
+  # Returns a string.
+  def random_word(words)
+    chosen_word             = nil
+    total_occurrences_count = words.values.inject(:+)
+    ordered_words           = Array(words).sort {|arr| arr.last }
+
+    ticket    = @random.rand(total_occurrences_count)
+    threshold = 0
+
+    ordered_words.each do |(word, count)|
+      threshold += count
+
+      if ticket < threshold
+        chosen_word = word
+        break
+      end
+    end
+
+    chosen_word
   end
 end
