@@ -113,20 +113,10 @@ class TwoChainz::Generator
 
     if @random
       # Random mode
+      next_word = random_word(choices)
 
-      total_occurrences_count = choices.values.inject(:+)
-      ordered_words           = Array(choices).sort {|arr| arr.last }
-
-      ticket    = @random.rand(total_occurrences_count)
-      threshold = 0
-
-      ordered_words.each do |(word, count)|
-        threshold += count
-
-        if ticket < threshold
-          next_word = word
-          break
-        end
+      if next_word == :ending
+        next_word = random_word(@words_table.words_after(:beginning))
       end
     else
       # Boring mode
@@ -166,5 +156,25 @@ class TwoChainz::Generator
     sanitized_text.gsub!(MENTION_REGEX, '')
 
     sanitized_text
+  end
+
+  def random_word(words)
+    chosen_word             = nil
+    total_occurrences_count = words.values.inject(:+)
+    ordered_words           = Array(words).sort {|arr| arr.last }
+
+    ticket    = @random.rand(total_occurrences_count)
+    threshold = 0
+
+    ordered_words.each do |(word, count)|
+      threshold += count
+
+      if ticket < threshold
+        chosen_word = word
+        break
+      end
+    end
+
+    chosen_word
   end
 end
