@@ -41,6 +41,11 @@ describe TwoChainz::Generator do
   end
 
   describe 'spit' do
+    it 'must not throw out @ symbols' do
+      @generator.hear('@jakeboxer how @u doin')
+      assert_equal '@jakeboxer how @u doin', @generator.spit(:words => 4)
+    end
+
     describe 'with no options provided' do
       it 'must raise an ArgumentError' do
         @generator.hear('irrelevant')
