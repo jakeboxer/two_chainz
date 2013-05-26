@@ -51,6 +51,11 @@ describe TwoChainz::Generator do
       assert_equal 'drive slow homie drive slow homie drive', @generator.spit(:words => 7)
     end
 
+    it 'must ignore URLs it has heard' do
+      @generator.hear("yo i was at http://zombo.com/ the other day and that shit's still up")
+      assert_equal "yo i was at the other day and that shit's still up", @generator.spit(:words => 12)
+    end
+
     describe 'with no options provided' do
       it 'must raise an ArgumentError' do
         @generator.hear('irrelevant')
