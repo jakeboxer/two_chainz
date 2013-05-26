@@ -30,7 +30,7 @@ class TwoChainz::WordsTable
     add_row(first_word)
     add_row(second_word) unless second_word == :ending
 
-    @table[first_word][second_word]  += 1
+    row(first_word)[second_word]  += 1
   end
 
   # Public: Whether or not the words table has the specified word.
@@ -68,12 +68,16 @@ class TwoChainz::WordsTable
   #
   # Returns a hash.
   def words_after(word)
-    Hash[@table[word] || {}]
+    Hash[@table[word.downcase] || {}]
   end
 
   private
 
   def add_row(word)
-    @table[word] ||= Hash.new(0)
+    @table[word.downcase] ||= Hash.new(0)
+  end
+
+  def row(word)
+    @table[word.downcase]
   end
 end
