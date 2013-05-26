@@ -42,6 +42,11 @@ describe TwoChainz::WordsTable do
     it 'must be false if the word is not in the table' do
       refute @table.include?('chainz')
     end
+
+    it 'must ignore case' do
+      @table.increment('cHaInZ')
+      assert @table.include?('chainz')
+    end
   end
 
   describe 'words' do
@@ -74,6 +79,13 @@ describe TwoChainz::WordsTable do
       @table.increment('broken')
 
       assert_equal({'hearted' => 1, :ending => 1}, @table.words_after('broken'))
+    end
+
+    it 'must ignore case on lookup' do
+      @table.increment('bAbY', 'doll')
+
+      # Note the capitalization difference between the increment and the lookup
+      assert_equal({'doll' => 1}, @table.words_after('BaBy'))
     end
   end
 
