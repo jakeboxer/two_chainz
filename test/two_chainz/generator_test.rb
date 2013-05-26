@@ -42,8 +42,8 @@ describe TwoChainz::Generator do
 
   describe 'spit' do
     it 'must not throw out symbols' do
-      @generator.hear('@jakeboxer how @u #doin ++today++ man and :+1: to you')
-      assert_equal '@jakeboxer how @u #doin ++today++ man and :+1: to you', @generator.spit(:words => 10)
+      @generator.hear('how u #doin ++today++ man and :+1: to you')
+      assert_equal 'how u #doin ++today++ man and :+1: to you', @generator.spit(:words => 9)
     end
 
     it 'must be able to start a new chain if the sentence should end' do
@@ -54,6 +54,11 @@ describe TwoChainz::Generator do
     it 'must ignore URLs it has heard' do
       @generator.hear("yo i was at http://zombo.com/ the other day and that shit's still up")
       assert_equal "yo i was at the other day and that shit's still up", @generator.spit(:words => 12)
+    end
+
+    it 'must ignore @mention style tokens it has heard' do
+      @generator.hear("hey @jakeboxer don't be in this tweet")
+      assert_equal "hey don't be in this tweet", @generator.spit(:words => 6)
     end
 
     describe 'with no options provided' do

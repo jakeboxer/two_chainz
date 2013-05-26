@@ -1,6 +1,21 @@
 class TwoChainz::Generator
+  # Pattern used to find URLs in text.
   # Taken from http://blog.mattheworiordan.com/post/13174566389/url-regular-expression-for-links-with-or-without-the
   URL_REGEX = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[.\!\/\\w]*))?)/
+
+  # Pattern used to find @mentions in text.
+  # Taken from https://github.com/jch/html-pipeline/blob/eb3bcb2a44cf1cbb273efa83ccbdda7972590c1a/lib/html/pipeline/%40mention_filter.rb#L38-L48
+  MENTION_REGEX = /
+    (?:^|\W)                   # beginning of string or non-word char
+    @((?>[a-z0-9][a-z0-9-]*))  # @username
+    (?!\/)                     # without a trailing slash
+    (?=
+      \.+[ \t\W]|              # dots followed by space or non-word character
+      \.+$|                    # dots at end of line
+      [^0-9a-zA-Z_.]|          # non-word character except dot
+      $                        # end of line
+    )
+  /ix
 
   # Public: Create a new TwoChainz::Generator instance.
   #
@@ -30,7 +45,7 @@ class TwoChainz::Generator
     words         = sanitize(words)
     previous_word = nil
 
-    words.scan(/[\w\':+@#]+/) do |current_word|
+    words.scan(/[\w\':+#]+/) do |current_word|
       # Increment the number of times the current word has been the successor of
       # the previous word.
       @words_table.increment(previous_word, current_word)
@@ -122,6 +137,11 @@ class TwoChainz::Generator
   #
   # Returns a string.
   def sanitize(text)
-    text.gsub(URL_REGEX, '')
+    sanitized_text = text.dup
+
+    sanitized_text.gsub!(URL_REGEX, '')
+    sanitized_text.gsub!(MENTION_REGEX, '')
+
+    sanitized_text
   end
 end
