@@ -1,4 +1,22 @@
 class TwoChainz::Generator
+  # Pattern used to find URLs in text.
+  # Taken from http://blog.mattheworiordan.com/post/13174566389/url-regular-expression-for-links-with-or-without-the
+  URL_REGEX = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[.\!\/\\w]*))?)/
+
+  # Pattern used to find @mentions in text.
+  # Taken from https://github.com/jch/html-pipeline/blob/eb3bcb2a44cf1cbb273efa83ccbdda7972590c1a/lib/html/pipeline/%40mention_filter.rb#L38-L48
+  MENTION_REGEX = /
+    (?:^|\W)                   # beginning of string or non-word char
+    @((?>[a-z0-9][a-z0-9-]*))  # @username
+    (?!\/)                     # without a trailing slash
+    (?=
+      \.+[ \t\W]|              # dots followed by space or non-word character
+      \.+$|                    # dots at end of line
+      [^0-9a-zA-Z_.]|          # non-word character except dot
+      $                        # end of line
+    )
+  /ix
+
   # Public: Create a new TwoChainz::Generator instance.
   #
   # options - Hash of options.
@@ -24,9 +42,10 @@ class TwoChainz::Generator
   #
   # Returns nothing.
   def hear(words)
+    words         = sanitize(words)
     previous_word = nil
 
-    words.scan(/[\w\':+@#]+/) do |current_word|
+    words.scan(/[\w\':+#]+/) do |current_word|
       # Increment the number of times the current word has been the successor of
       # the previous word.
       @words_table.increment(previous_word, current_word)
@@ -101,5 +120,31 @@ class TwoChainz::Generator
     next_word = @words_table.words.sort.first if next_word == :ending
 
     next_word
+  end
+
+  # Internal: Remove unwanted tokens from the specified text.
+  #
+  # text - Text to remove unwanted tokens from.
+  #
+  # NOTE: This should prolly be refactored into a Sanitizer object with options
+  # and its own tests and stuff. If this method starts getting big, do that.
+  #
+  # ANOTHER NOTE: This hurts accuracy a little cuz it glues together two words
+  # that did not originally follow each other directly. Might be worth breaking
+  # up the string into multiple #hears on removed tokens or some other way of
+  # decreasing the importance of a pair made in this way. Honestly though, it
+  # probably doesn't matter that much, so don't spend a ton of time on it.
+  #
+  # Returns a string.
+  def sanitize(text)
+    sanitized_text = text.dup
+
+    # Strip URLs
+    sanitized_text.gsub!(URL_REGEX, '')
+
+    # Strip @mention style tokens
+    sanitized_text.gsub!(MENTION_REGEX, '')
+
+    sanitized_text
   end
 end
