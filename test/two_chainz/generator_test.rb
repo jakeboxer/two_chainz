@@ -46,6 +46,11 @@ describe TwoChainz::Generator do
       assert_equal '@jakeboxer how @u #doin ++today++ man and :+1: to you', @generator.spit(:words => 10)
     end
 
+    it 'must be able to start a new chain if the sentence should end' do
+      @generator.hear('drive slow homie')
+      assert_equal 'drive slow homie drive slow homie drive', @generator.spit(:words => 7)
+    end
+
     describe 'with no options provided' do
       it 'must raise an ArgumentError' do
         @generator.hear('irrelevant')

@@ -98,7 +98,7 @@ class TwoChainz::Generator
     # If the most popular next word is the sentence ending, pick the
     # alphabetical first word.
     # TODO(jakeboxer): Make this random in non-boring situations.
-    next_word = heard_words.sort.first if next_word == :ending
+    next_word = @words_table.words.sort.first if next_word == :ending
 
     next_word
   end
