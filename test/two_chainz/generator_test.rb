@@ -43,8 +43,8 @@ describe TwoChainz::Generator do
 
     describe 'spit' do
       it 'must not throw out symbols' do
-        @generator.hear('how u #doin ++today++ man and :+1: to you')
-        assert_equal 'how u #doin ++today++ man and :+1: to you', @generator.spit(:words => 9)
+        @generator.hear('how u #doin ++today++ man a_nd :+1: to you')
+        assert_equal 'how u #doin ++today++ man a_nd :+1: to you', @generator.spit(:words => 9)
       end
 
       it 'must be able to start a new chain if the sentence should end' do
@@ -65,6 +65,11 @@ describe TwoChainz::Generator do
 
         it 'must ignore them in the middle of sentences' do
           @generator.hear("hey @jakeboxer don't be in this tweet")
+          assert_equal "hey don't be in this tweet", @generator.spit(:words => 6)
+        end
+
+        it 'must ignore ones with underscores' do
+          @generator.hear("hey @jake_boxer don't be in this tweet")
           assert_equal "hey don't be in this tweet", @generator.spit(:words => 6)
         end
       end

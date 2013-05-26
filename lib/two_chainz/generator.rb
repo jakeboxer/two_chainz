@@ -7,7 +7,7 @@ class TwoChainz::Generator
   # Taken from https://github.com/jch/html-pipeline/blob/eb3bcb2a44cf1cbb273efa83ccbdda7972590c1a/lib/html/pipeline/%40mention_filter.rb#L38-L48
   MENTION_REGEX = /
     (?:^|\W)                   # beginning of string or non-word char
-    @((?>[a-z0-9][a-z0-9-]*))  # @username
+    @((?>[\w][\w-]*))  # @username
     (?!\/)                     # without a trailing slash
     (?=
       \.+[ \t\W]|              # dots followed by space or non-word character
