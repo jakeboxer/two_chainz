@@ -75,6 +75,13 @@ describe TwoChainz::WordsTable do
 
       assert_equal({'hearted' => 1, :ending => 1}, @table.words_after('broken'))
     end
+
+    it 'must ignore case on lookup' do
+      @table.increment('bAbY', 'doll')
+
+      # Note the capitalization difference between the increment and the lookup
+      assert_equal({'doll' => 1}, @table.words_after('BaBy'))
+    end
   end
 
   ##################
