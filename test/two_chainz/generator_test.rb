@@ -67,6 +67,11 @@ describe TwoChainz::Generator do
           @generator.hear("hey @jakeboxer don't be in this tweet")
           assert_equal "hey don't be in this tweet", @generator.spit(:words => 6)
         end
+
+        it 'must ignore ones with underscores' do
+          @generator.hear("hey @jake_boxer don't be in this tweet")
+          assert_equal "hey don't be in this tweet", @generator.spit(:words => 6)
+        end
       end
 
       describe 'with no options provided' do
