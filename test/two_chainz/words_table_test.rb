@@ -42,6 +42,11 @@ describe TwoChainz::WordsTable do
     it 'must be false if the word is not in the table' do
       refute @table.include?('chainz')
     end
+
+    it 'must ignore case' do
+      @table.increment('cHaInZ')
+      assert @table.include?('chainz')
+    end
   end
 
   describe 'words' do
