@@ -42,8 +42,8 @@ describe TwoChainz::Generator do
 
   describe 'spit' do
     it 'must not throw out symbols' do
-      @generator.hear('@jakeboxer how @u #doin ++today++ gurl')
-      assert_equal '@jakeboxer how @u #doin ++today++ gurl', @generator.spit(:words => 6)
+      @generator.hear('@jakeboxer how @u #doin ++today++ man and :+1: to you')
+      assert_equal '@jakeboxer how @u #doin ++today++ man and :+1: to you', @generator.spit(:words => 10)
     end
 
     describe 'with no options provided' do
