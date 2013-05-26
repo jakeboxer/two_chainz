@@ -131,4 +131,40 @@ describe TwoChainz::Generator do
       end
     end
   end
+
+  describe 'randomness' do
+    before do
+      @generator = TwoChainz::Generator.new
+    end
+
+    describe 'spit' do
+      it 'must not produce the same result every time when called a bunch' do
+        @generator.hear("King poetic. Too much flavor, I'm major")
+        @generator.hear("Atlanta ain't Brave-r, I'll pull a number like a pager")
+        @generator.hear("Cause I'm an ace when I face the bass")
+        @generator.hear("40-side is the place that is giving me grace")
+        @generator.hear("Now wait, another dose and you might be dead")
+        @generator.hear("And I'm a Nike-head, I wear chains that excite the Feds")
+        @generator.hear("And ain't a damn thing gonna change")
+        @generator.hear("I'mma performer strange, so the mic warmer was born to gain")
+        @generator.hear("Nas, why did you do it")
+        @generator.hear("You know you got the mad fat fluid when you rhyme, it's halftime")
+
+        first_spit   = @generator.spit(:words => 12)
+        spit_changed = false
+
+        # Re-spit 100 times. The first time we see a different result, we know
+        # there's randomness, so we can break out. If this test manages to
+        # generate a false negative, that would be fucking awesome, and please
+        # take a screenshot of it and send it to me.
+        100.times do
+          current_spit = @generator.spit(:words => 12)
+          spit_changed = (current_spit != first_spit)
+          break if spit_changed
+        end
+
+        assert spit_changed, "Randomness isn't working"
+      end
+    end
+  end
 end
