@@ -108,16 +108,36 @@ class TwoChainz::Generator
   #
   # Returns a string.
   def word_after(previous_word)
-    choices = @words_table.words_after(previous_word)
+    next_word = nil
+    choices   = @words_table.words_after(previous_word)
 
-    # Pick the most popular next word.
-    # TODO(jakeboxer): Make this random in non-boring situations.
-    next_word = choices.max_by {|word, count| count}.first
+    if @random
+      # Random mode
 
-    # If the most popular next word is the sentence ending, pick the
-    # alphabetical first word.
-    # TODO(jakeboxer): Make this random in non-boring situations.
-    next_word = @words_table.words.sort.first if next_word == :ending
+      total_occurrences_count = choices.values.inject(:+)
+      ordered_words           = Array(choices).sort {|arr| arr.last }
+
+      ticket    = @random.rand(total_occurrences_count)
+      threshold = 0
+
+      ordered_words.each do |(word, count)|
+        threshold += count
+
+        if ticket < threshold
+          next_word = word
+          break
+        end
+      end
+    else
+      # Boring mode
+
+      # Pick the most popular next word.
+      next_word = choices.max_by {|word, count| count}.first
+
+      # If the most popular next word is the sentence ending, pick the
+      # alphabetical first word.
+      next_word = @words_table.words.sort.first if next_word == :ending
+    end
 
     next_word
   end
