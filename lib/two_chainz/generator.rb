@@ -139,7 +139,10 @@ class TwoChainz::Generator
   def sanitize(text)
     sanitized_text = text.dup
 
+    # Strip URLs
     sanitized_text.gsub!(URL_REGEX, '')
+
+    # Strip @mention style tokens
     sanitized_text.gsub!(MENTION_REGEX, '')
 
     sanitized_text
