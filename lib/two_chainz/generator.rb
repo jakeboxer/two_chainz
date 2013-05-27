@@ -17,6 +17,11 @@ class TwoChainz::Generator
     )
   /ix
 
+  # Words that are not allowed in the table
+  WORD_BLACKLIST = [
+    ':'
+  ]
+
   # Public: Create a new TwoChainz::Generator instance.
   #
   # options - Hash of options.
@@ -46,6 +51,9 @@ class TwoChainz::Generator
     previous_word = nil
 
     words.scan(/[\w\':+#]+/) do |current_word|
+      # Skip the word if it's in the blacklist
+      next if WORD_BLACKLIST.include?(current_word)
+
       # Increment the number of times the current word has been the successor of
       # the previous word.
       @words_table.increment(previous_word, current_word)

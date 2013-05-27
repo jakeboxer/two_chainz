@@ -47,6 +47,11 @@ describe TwoChainz::Generator do
         assert_equal 'how u #doin ++today++ man a_nd :+1: to you', @generator.spit(:words => 9)
       end
 
+      it 'must throw out smiley faces' do
+        @generator.hear('hey :) how you doin')
+        assert_equal 'hey how you doin', @generator.spit(:words => 4)
+      end
+
       it 'must be able to start a new chain if the sentence should end' do
         @generator.hear('drive slow homie')
         assert_equal 'drive slow homie drive slow homie drive', @generator.spit(:words => 7)
