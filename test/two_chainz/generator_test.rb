@@ -172,6 +172,11 @@ describe TwoChainz::Generator do
 
         assert spit_changed, "Randomness isn't working"
       end
+
+      it 'must work with :max_chars and :min_chars' do
+        @generator.hear('Went from most hated to the champion god flow')
+        refute_empty @generator.spit(:max_chars => 50, :min_chars => 25)
+      end
     end
   end
 end
