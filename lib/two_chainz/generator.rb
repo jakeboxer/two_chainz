@@ -84,14 +84,20 @@ class TwoChainz::Generator
         sentence << word_after(previous_word)
       end
     elsif max_chars
+      target_chars = if @random && (min_chars = options[:min_chars])
+        @random.rand(min_chars..max_chars)
+      else
+        max_chars
+      end
+
       sentence_length = -1 # Start at -1 cuz of the first space
 
-      while sentence_length < max_chars
+      while sentence_length < target_chars
         previous_word    = sentence.last || :beginning
         word             = word_after(previous_word)
         sentence_length += word.length + 1 # Include space
 
-        sentence << word_after(previous_word) unless sentence_length > max_chars
+        sentence << word_after(previous_word) unless sentence_length > target_chars
       end
     else
       raise ArgumentError, "Either :words or :max_chars must be specified"

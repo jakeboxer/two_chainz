@@ -67,3 +67,9 @@ generator.hear("I ran like a cheetah with thoughts of an assassin")
 
 generator.spit(:max_chars => 20) # => "Once they cheetah"
 ```
+
+If you use `:max_chars`, you can also optionally use `:min_chars`. If you do, the spit will aim for some point in between the max and min.
+
+``` ruby
+generator.spit(:max_chars => 20, :min_chars => 10) # => "Once they caught"
+```
